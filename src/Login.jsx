@@ -8,7 +8,7 @@ function dataObject() {
   };
 }
 
-export function Login() {
+export function Login({ onLogin }) {
   const [data, setData] = useState(dataObject());
 
   function handleData(event) {
@@ -25,8 +25,17 @@ export function Login() {
     });
   }
 
+  function handleLogin(event) {
+    event.preventDefault();
+    onLogin(data);
+  }
+
+  function handleReset() {
+    setData(dataObject())
+  }
+
   return (
-    <form>
+    <form onSubmit={handleLogin}>
       <input
         onChange={handleData}
         type="text"
@@ -46,7 +55,10 @@ export function Login() {
         value={data.checked}
       />
 
-      {/* Inserito per controllo */}
+      <button disabled={!data.username && data.username}>
+        Login
+      </button>
+      <button type="button" onClick={handleReset}>Reset</button>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </form>
   );
